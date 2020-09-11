@@ -33,9 +33,9 @@
 		}]
     },
 	"tabBar": {
-		"backgroundColor": "#4F9BFA",
-		"selectedColor": "#CCFFFF",
-		"color": "#99CCFF",
+		"backgroundColor": "#96632E",
+		"selectedColor": "#c8a188",
+		"color": "#b69281",
 		"list": [
 			{
 				"text": "首页",
@@ -59,7 +59,7 @@
 	},
 	"globalStyle": {
 		"navigationBarTitleText": "邵莲的博客",
-		"navigationBarBackgroundColor": "#4F9BFA",
+		"navigationBarBackgroundColor": "#96632E",
 		"navigationBarTextStyle": "white"
 	}
 }

@@ -89,7 +89,7 @@
 		position: relative;
 		align-items: center;
 		justify-content: center;
-		background-color: #f2f2f2;
+		background-color: #FCFAF2;
 		height: 100vh;
 		overflow: scroll;
 	}
@@ -108,14 +108,14 @@
 		animation: fadeIn ease-in 1.5s;
 		.author-img{
 			display: inline-block;
-			width: 160rpx;
-			height: 160rpx;
+			width: 140rpx;
+			height: 140rpx;
 			border-radius: 50%;
 		}
 		.sub-div {
 			display: inline-block;
 			position: relative;
-			width: calc(100% - 205rpx);
+			width: calc(100% - 195rpx);
 			padding: 0rpx 15rpx;
 
 			.author-name{
@@ -124,7 +124,8 @@
 				font-weight: bolder;
 				font-family: Arial, Helvetica, sans-serif;
 				font-size: 16px;
-				color: rgba(107, 103, 97, 1);
+				color: #96632E;
+				opacity: 0.8;
 				line-height: 20px;
 			}
 			.author-intro{
@@ -133,7 +134,7 @@
 				font-family: Arial, Helvetica, sans-serif;
 				font-size: 14px;
 				text-align: left;
-				color: rgba(107, 103, 97, 0.9);
+				color: #96632E;
 				text-indent: 1rem;
 			}
 		}
@@ -176,7 +177,7 @@
 				width: 30rpx;
 				height: 30rpx;
 				vertical-align: middle;
-				color: #996600;
+				color: #96632E;
 			}
 		}
 
@@ -187,7 +188,7 @@
 			font-family: Arial, Helvetica, sans-serif;
 			font-size: 16px;
 			line-height: 32px;
-			color: #996600;
+			color: #96632E;
 		}
 
 		.friend-link{
