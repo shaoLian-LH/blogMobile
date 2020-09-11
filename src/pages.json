@@ -1,16 +1,65 @@
 {
-	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+	"pages": [ 
 		{
-			"path": "pages/index/index",
+			"path": "pages/home/index",
 			"style": {
-				"navigationBarTitleText": "uni-app"
+				"navigationBarTitleText": "邵莲的博客"
+			}
+		},
+		{
+			"path": "pages/note/index",
+			"style": {
+				"navigationBarTitleText": "邵莲的笔记"
+			}
+		},
+		{
+			"path": "pages/about/index",
+			"style": {
+				"navigationBarTitleText": "关于本博客"
 			}
 		}
 	],
+	"condition": { 
+        "current": 2, 
+        "list": [{
+            "name": "home", 
+            "path": "pages/home/index"
+        },{
+			"name": "note",
+			"path": "pages/note/index"
+		},{
+			"name": "about",
+			"path": "pages/about/index"
+		}]
+    },
+	"tabBar": {
+		"backgroundColor": "#4F9BFA",
+		"selectedColor": "#CCFFFF",
+		"color": "#99CCFF",
+		"list": [
+			{
+				"text": "首页",
+				"pagePath": "pages/home/index",
+				"iconPath": "static/home.svg",
+				"selectedIconPath": "static/home-active.svg"
+			},
+			{
+				"text": "笔记",
+				"pagePath": "pages/note/index",
+				"iconPath": "static/writing.svg",
+				"selectedIconPath": "static/writing-active.svg"
+			},
+			{
+				"text": "关于",
+				"pagePath": "pages/about/index",
+				"iconPath": "static/about.svg",
+				"selectedIconPath": "static/about-active.svg"
+			}
+		]
+	},
 	"globalStyle": {
-		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "uni-app",
-		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8"
+		"navigationBarTitleText": "邵莲的博客",
+		"navigationBarBackgroundColor": "#4F9BFA",
+		"navigationBarTextStyle": "white"
 	}
 }
