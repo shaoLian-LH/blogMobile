@@ -39,7 +39,7 @@
 			/>
 		</view>
 		<view :hidden = "listmode" class = "article-mode">
-
+			<article :article = "article" />
 		</view>
 	</view>
 </template>
@@ -48,6 +48,7 @@
 	import artcleList from './component/articleList.vue';
 	import icons from '../../component/uni-icons/uni-icons.vue';
 	import searchModal from './component/searchModal.vue';
+	import article from './component/article.vue';
 
 	export default {
 		data() {
@@ -55,6 +56,7 @@
 				isLastPage: false,
 				pn: 1,
 				articles: [],
+				article: undefined,
 				windowHeight: 0,
 				isGetting: false,
 				showBackToTop: false,
@@ -88,8 +90,6 @@
 			}).exec();
 		},
 		onLoad() {
-			let articleId = uni.getStorageSync('articleId');
-			console.log(articleId);
 			this.getArticles();
 			this.getTagInfos();
 			// 获取当前屏幕的高度
@@ -113,14 +113,27 @@
 			uni.$on('chooceItem', (item)=>{
 				this.choicedTag = item;
 			});
-			uni.$on('showNote', (id)=>{
-				console.log(id);
+			uni.$on('showNote', async (id)=>{
+				const res = await this.$myRequest({
+								url: `${this.$CONSTURL.GET_ARTICLE_BY_ID}/${id}`
+							});
+				if(res.data.data) {
+					this.article = res.data.data;
+					this.listmode = false;
+				} else {
+					uni.showToast({
+						title: '获取文章信息失败',
+						icon: 'error',
+						duration: 2000
+					});
+				}
 			});
 		},
 		components: {
 			"artcleList": artcleList,
 			"uni-icons": icons,
-			"searchModal": searchModal
+			"searchModal": searchModal,
+			"article": article
 		},
 		methods: {
 			async getArticles (){

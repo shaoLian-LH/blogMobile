@@ -5,6 +5,7 @@
             v-for = "(item, index) in articleList"
             :key = "item.id"
             class = "article-item-view"
+            @click = "goToArticle(item.id)"
         >
             <view class = "note-title-view">
                 <p
@@ -65,9 +66,6 @@
 
 	export default {
         props: ['articles'],
-        onLoad(){
-          
-        },
         watch: {
             articles: {
                 deep: true,
@@ -97,6 +95,11 @@
                 articleList: [],
                 timeIcon: timeIcon,
                 watchIcon: watchIcon
+            }
+        },
+        methods: {
+            goToArticle(id) {
+                uni.$emit('navigatorToNote', id);
             }
         }
 	}
