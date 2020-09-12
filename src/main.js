@@ -14,7 +14,8 @@ Vue.filter('formatDate', (date)=>{
 	const day = newDate.getDay().toString().padStart(2, 0);
 	return `${year}:${month}:${day}`;
 });
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
+
 App.mpType = 'app'
 
 const app = new Vue({

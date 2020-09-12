@@ -1,16 +1,16 @@
 <template>
-    <div class = "empty-div">
+    <view class = "empty-div">
       <p class = "empty-hint">QAQ</p>
       <p class = "empty-p">
         {{emptyTitle ? emptyTitle : '没有任何数据呢'}}
       </p>
-      <div 
+      <view 
         class = "empty-content" 
         v-if = "content!==undefined"
       >
         {{content}}
-      </div>
-    </div>
+      </view>
+    </view>
 </template>
 
 <script>
@@ -22,9 +22,8 @@
 <style lang="scss">
   .empty-div{
     position: relative;
-    width: 80%;
-    top: 30%;
-    left: 10%;
+    width: calc(100% - 4px);
+    top: 20%;
     height: 200px;
     border: dashed 2px $primary-color;
     text-align: center;

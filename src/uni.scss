@@ -65,8 +65,22 @@ $uni-font-size-subtitle:36rpx;
 $uni-color-paragraph: #3F536E; // 文章段落颜色
 $uni-font-size-paragraph:30rpx;
 
+/* 更改全局样式 */
+img {
+    display: inline-block;
+    position: relative;
+    width: 100%;
+}
 
+.uni-input-input {
+    position: relative;
+    display: inline-block;
+    background-color: $secondary-color;
+    color: #f2f2f2;
+    border-radius: 8rpx;
+}
 /* 全局动画效果 */
+// fadeIn
 @keyframes fadeIn {
     0% {
         opacity: 0;
@@ -97,5 +111,39 @@ $uni-font-size-paragraph:30rpx;
     }
     100% {
         opacity: 1;
+    }
+}
+
+// jumpOut
+@keyframes jumpOut {
+    0% {
+        transform: scale(0.5);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+@-o-keyframes jumpOut {
+    0% {
+        transform: scale(0.5);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+@-webkit-keyframes jumpOut {
+    0% {
+        transform: scale(0.5);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+@-moz-keyframes jumpOut {
+    0% {
+        transform: scale(0.5);
+    }
+    100% {
+        transform: scale(1);
     }
 }

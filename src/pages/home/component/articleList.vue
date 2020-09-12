@@ -98,7 +98,7 @@
             border-radius: 14rpx;
             font-size: 12px;
             height: 25px;
-            line-height: 22px;
+            line-height: 24px;
             width: auto;
             background-color:$primary-color;
             color: #f2f2f2;

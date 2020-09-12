@@ -4,6 +4,9 @@ const myRequest = (options) => {
 			url: `${options.url}`,
 			method: options.method || 'GET',
 			data: options.data || {},
+			// #ifdef H5
+			withCredentials: true,
+			// #endif
 			success: (res) => {
 				resolve(res);
 			},
