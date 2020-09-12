@@ -14,7 +14,8 @@
             <view
                 class = "article-list-li"
                 v-for = "item in articles" 
-                :key = "item.id"
+                :key = "item.id" 
+                @click = "goToArticle(item.id)"
             >
                 <p class = "article-list-li-tag">{{item.tagName}}</p>
                 <p class = "article-list-li-title">{{item.title.replace("# ", "")}}</p>
@@ -31,7 +32,12 @@
 				articleIcon: ArticleIcon
 			}
         },
-		props: ['articles']
+        props: ['articles'],
+        methods: {
+            goToArticle(id){
+                uni.$emit('navigatorToNote', id);
+            }
+        }
 	}
 </script>
 

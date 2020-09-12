@@ -7,7 +7,8 @@
 		>
 			<swiper-item 
 				v-for = "banner in banners"
-				:key = "banner.id"
+				:key = "banner.id" 
+                @click = "goToArticle(banner.articleId)"
 			>
 				<view
                     :key = "banner.articleId" 
@@ -27,7 +28,12 @@
 
 <script>
 	export default {
-        props: ['banners']
+        props: ['banners'],
+        methods: {
+            goToArticle(id){
+                uni.$emit('navigatorToNote', id);
+            }
+        }
 	}
 </script>
 

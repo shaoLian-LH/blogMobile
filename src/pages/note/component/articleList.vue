@@ -65,16 +65,17 @@
 
 	export default {
         props: ['articles'],
-        onLoad: ()=>{
-            uni.$on('article-search-list',()=>{
-                console.log('触发了')
-				this.articleList = [];
-			});
+        onLoad(){
+          
         },
         watch: {
             articles: {
                 deep: true,
                 handler(nvalue, ovalue) {
+                    if (nvalue.length===0) {
+                        this.articleList = [];
+                        return ;
+                    }
                     if(nvalue !== ovalue) {
                         let articleList = this.articleList;
                         for(let i = 0; i < nvalue.length; i++) {

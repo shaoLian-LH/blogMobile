@@ -1,31 +1,46 @@
 <template>
 	<view class = "content">
-		<artcleList :articles = "articles" />
-		<view 
-			class = "top" 
-			:style = "{'display':(showBackToTop === true? 'block':'none')}"
-		>
+		<view :hidden = "!listmode" class = "list-mode">
+			<artcleList :articles = "articles" />
+			<view 
+				class = "top" 
+				:style = "{'display':(showBackToTop === true? 'block':'none')}"
+			>
+				<uni-icons 
+					class = "sl-icon topc" 
+					type = "arrowthinup"
+					@click = "backToTop"
+					size = "15" 
+					color = "white"
+				/>
+			</view>
 			<uni-icons 
-				class = "sl-icon topc" 
-				type = "arrowthinup"
-				@click = "backToTop"
-				size = "15" 
-				color = "white"
+				:hidden = "wannerSearch"
+				v-if = "!customSearch"
+				class = "sl-icon search-icon" 
+				type = "search"
+				@click = "wannerSearchFunction" 
+				size = "15"
+				color = "white" 
+			/>
+			<uni-icons 
+				:hidden = "wannerSearch"
+				v-if = "customSearch"
+				class = "sl-icon search-icon" 
+				type = "undo-filled"
+				@click = "changeToCustomSearch(false, '')" 
+				size = "15"
+				color = "white" 
+			/>
+			<searchModal 
+				:hidden = "!wannerSearch" 
+				:tags = "tags" 
+				:choicedTag = "choicedTag"
 			/>
 		</view>
-		<uni-icons 
-			:hidden = "wannerSearch"
-			class = "sl-icon search-icon" 
-			type = "search"
-			@click = "wannerSearchFunction" 
-			size = "15"
-			color = "white" 
-		/>
-		<searchModal 
-			:hidden = "!wannerSearch" 
-			:tags = "tags" 
-			:choicedTag = "choicedTag"
-		/>
+		<view :hidden = "listmode" class = "article-mode">
+
+		</view>
 	</view>
 </template>
 
@@ -43,8 +58,11 @@
 				windowHeight: 0,
 				isGetting: false,
 				showBackToTop: false,
-				wannerSearch: true,
+				wannerSearch: false,
+				customSearch: false,
 				tags: [],
+				listmode: true,
+				title: '',
 				choicedTag : {
                     tagName: "All",
                     typeId: 0
@@ -70,6 +88,8 @@
 			}).exec();
 		},
 		onLoad() {
+			let articleId = uni.getStorageSync('articleId');
+			console.log(articleId);
 			this.getArticles();
 			this.getTagInfos();
 			// 获取当前屏幕的高度
@@ -80,17 +100,22 @@
 			});
 			// 申请全局事件，辅助文章列表搜索
 			uni.$on('article-search',(title)=>{
-				this.pn = 1;
-				this.getArticles(title);
-				this.wannerSearch = false;
-				this.articles = [];
+				this.changeToCustomSearch(true, title);
+				this.getArticles();
 			});
 			uni.$on('cancel-search', ()=>{
 				this.wannerSearch = false;
+				this.choicedTag = {
+					tagName: "All",
+                    typeId: 0
+				}
 			});
 			uni.$on('chooceItem', (item)=>{
 				this.choicedTag = item;
-			})
+			});
+			uni.$on('showNote', (id)=>{
+				console.log(id);
+			});
 		},
 		components: {
 			"artcleList": artcleList,
@@ -98,20 +123,18 @@
 			"searchModal": searchModal
 		},
 		methods: {
-			async getArticles (title = undefined){
+			async getArticles (){
 				if(!this.isGetting && !this.isLastPage) {
 					this.isGetting = true;
 					let temp;
-					if(title === undefined || title.length === 0){
+					if(this.title.length === 0){
 						temp = "?pn=" + this.pn;
 					} else {
-						temp = "?pn=" + this.pn + "&title=" + title;
-						this.articles = [];
+						temp = "?pn=" + this.pn + "&title=" + this.title;
 					}
 					if(this.choicedTag.typeId !== 0) {
 						temp = temp + "&typeId=" + this.choicedTag.typeId;
 					}
-					console.log(temp)
 					let url = this.$CONSTURL.GET_ARTICLES_BY_PARAMS + temp;
 					const res = await this.$myRequest({
 									url: url
@@ -126,6 +149,7 @@
 							icon: 'none',
 							duration: 2000
 						});
+						this.title = '';
 					}
 					this.isGetting = false;
 				}
@@ -148,6 +172,21 @@
 			},
 			wannerSearchFunction() {
 				this.wannerSearch = true;
+			},
+			changeToCustomSearch(flag, title) {
+				this.pn = 1;
+				this.articles = [];
+				this.wannerSearch = false;
+				this.isLastPage = false;
+				this.title = title;
+				this.customSearch = flag;
+				if(!flag) {
+					this.choicedTag = {
+						tagName: "All",
+						typeId: 0
+					}
+					this.getArticles();
+				}
 			}
 		}
 	}
@@ -155,6 +194,13 @@
 
 <style lang="scss">
 	.content {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		background-color: $main-background-color;
+	}
+	.list-mode {
 		display: flex;
 		flex-direction: column;
 		align-items: center;

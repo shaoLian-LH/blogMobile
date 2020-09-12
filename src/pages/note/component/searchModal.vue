@@ -61,7 +61,7 @@
         },
         methods: {
             closeModal() {
-                uni.$emit('cancel-search',()=>{});
+                uni.$emit('cancel-search');
             },
             showMenuFunc() {
                 this.showMenu = !this.showMenu;
@@ -74,8 +74,8 @@
                 this.title = e.detail.value.replace(/\s+/g, "");
             },
             findArticle(){
-                uni.$emit('article-search-list', ()=>{});
-                // uni.$emit('article-search', this.title);
+                uni.$emit('article-search', this.title);
+                this.title = '';
             }
         }
     }
