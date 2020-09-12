@@ -12,6 +12,9 @@
 	}
 </script>
 
-<style>
-	/*每个页面公共css */
+<style lang="scss">
+	.uni-page-head__title {
+		z-index: 1001 !important;
+	}	
+
 </style>

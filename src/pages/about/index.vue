@@ -6,10 +6,10 @@
 				src = "https://yuudachi.cn:444/static/images/article/8f072d3ff68f48b8b270930d6908a421.jpg" 
 				alt = "?"
 			/>
-			<div class = "sub-div">
+			<view class = "sub-div">
 				<p class = "author-name">邵莲</p>
 				<p class = "author-intro">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;曾经是舰狗。一名软件工程专业前端方向的学生。这个网站以记录本人日常学习经验、踩过的坑和放作业为主。</p>
-			</div>
+			</view>
 		</view>
 		<view class = "friend-main-div">
 			<view v-if = "links.length!==0">
@@ -105,7 +105,7 @@
 		text-align: center;
 		margin-right: 10rpx;
 		
-		animation: fadeIn ease-in 1.5s;
+		animation: fadeIn ease-out 0.8s;
 		.author-img{
 			display: inline-block;
 			width: 140rpx;
@@ -148,7 +148,7 @@
 		max-height: 100%;
 		text-align: left;
 		overflow: scroll;
-		animation: fadeIn ease-in 1.5s;
+		animation: fadeIn ease-out 0.8s;
 		margin-top: 30rpx;
 
 		&::-webkit-scrollbar-track{
@@ -243,37 +243,5 @@
 				z-index: 998;
 			}
 		}
-}
-@keyframes fadeIn {
-    0% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }
-}
-@-o-keyframes fadeIn {
-    0% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }
-}
-@-webkit-keyframes fadeIn {
-    0% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }
-}
-@-moz-keyframes fadeIn {
-    0% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }
 }
 </style>
