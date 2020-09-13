@@ -34,7 +34,7 @@
         </view>
         <empty 
             :hidden = "articleList.length !== 0" 
-            emptyTitle = "文章正在加载" 
+            emptyTitle = "作者懒到没有写过类似文章" 
         />
 	</view>
 </template>

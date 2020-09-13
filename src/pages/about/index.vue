@@ -90,7 +90,7 @@
 		align-items: center;
 		justify-content: center;
 		background-color: #FCFAF2;
-		height: 100vh;
+		height: 100%;
 		overflow: scroll;
 	}
 
@@ -99,6 +99,7 @@
 		position: relative;
 		left: 2.5%;
 		top: 0px;
+		margin-top: 10%;
 		display: inline-block;
 		width: 95%;
 		margin-bottom: 10rpx;

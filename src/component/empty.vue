@@ -23,10 +23,11 @@
   .empty-div{
     position: relative;
     width: calc(100% - 4px);
-    top: 20%;
+    padding-top: 20%;
     height: 200px;
     border: dashed 2px $primary-color;
     text-align: center;
+    background-color: #ECE3D9;
 
     .empty-hint{
         position: relative;

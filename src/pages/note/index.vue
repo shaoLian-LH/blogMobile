@@ -1,19 +1,19 @@
 <template>
 	<view class = "content">
-		<view :hidden = "!listmode" class = "list-mode">
+		<view 
+			class = "top" 
+			:style = "{'display':(showBackToTop === true? 'block':'none')}"
+		>
+			<uni-icons 
+				class = "sl-icon topc" 
+				type = "arrowthinup"
+				@click = "backToTop"
+				size = "15" 
+				color = "white"
+			/>
+		</view>
+		<view v-if = "listmode" class = "list-mode">
 			<artcleList :articles = "articles" />
-			<view 
-				class = "top" 
-				:style = "{'display':(showBackToTop === true? 'block':'none')}"
-			>
-				<uni-icons 
-					class = "sl-icon topc" 
-					type = "arrowthinup"
-					@click = "backToTop"
-					size = "15" 
-					color = "white"
-				/>
-			</view>
 			<uni-icons 
 				:hidden = "wannerSearch"
 				v-if = "!customSearch"
@@ -38,8 +38,16 @@
 				:choicedTag = "choicedTag"
 			/>
 		</view>
-		<view :hidden = "listmode" class = "article-mode">
-			<article :article = "article" />
+		<view v-show = "!listmode" class = "article-mode">
+			<articleInfo :detail = "detail" />
+			<uni-icons 
+				:hidden = "wannerSearch"
+				class = "sl-icon search-icon" 
+				type = "undo-filled"
+				@click = "changeToCustomSearch(false, '')" 
+				size = "15"
+				color = "white" 
+			/>
 		</view>
 	</view>
 </template>
@@ -48,7 +56,7 @@
 	import artcleList from './component/articleList.vue';
 	import icons from '../../component/uni-icons/uni-icons.vue';
 	import searchModal from './component/searchModal.vue';
-	import article from './component/article.vue';
+	import articleInfo from './component/articleInfo.vue';
 
 	export default {
 		data() {
@@ -56,12 +64,13 @@
 				isLastPage: false,
 				pn: 1,
 				articles: [],
-				article: undefined,
+				detail: {},
 				windowHeight: 0,
 				isGetting: false,
 				showBackToTop: false,
 				wannerSearch: false,
 				customSearch: false,
+				haveShownToast: true,
 				tags: [],
 				listmode: true,
 				title: '',
@@ -72,22 +81,37 @@
 			}
 		},
 		onPageScroll(res){
-			const query = uni.createSelectorQuery().select('.article-item-main-view');
-			// 处理是否显示返回头部的功能按钮
-			if(!this.showBackToTop && res.scrollTop > 600) {
-				this.showBackToTop = true;
-			} else if(res.scrollTop < 600){
-				if(this.showBackToTop) {
-					this.showBackToTop = false;
+			let query;
+			if(this.listmode) {
+				query = uni.createSelectorQuery().select('.article-item-main-view');
+				// 监听是否应该去获取新一轮的数据
+				query.boundingClientRect(data => {
+				if(data.top + data.height - 60 < this.windowHeight && this.isLastPage && !this.haveShownToast) {
+					this.haveShownToast = true;
+					uni.showToast({
+						title: '作者很懒，就写了这些文章',
+						icon: 'none',
+						duration: 2000
+					});
+				}
+				let flag = (data.top + data.height - 80) < this.windowHeight;
+					if(flag && !this.isGetting) {
+						this.getArticles();
+					}
+				}).exec();
+			} else {
+				query = uni.createSelectorQuery().select('#detail-note-main-div');
+			}
+			if(query) {
+				// 处理是否显示返回头部的功能按钮
+				if(query && !this.showBackToTop && res.scrollTop > 200) {
+					this.showBackToTop = true;
+				} else if(res.scrollTop < 200){
+					if(this.showBackToTop) {
+						this.showBackToTop = false;
+					}
 				}
 			}
-			// 监听是否应该去获取新一轮的数据
-			query.boundingClientRect(data => {
-				let flag = (data.top + data.height - 80) < this.windowHeight;
-				if(flag && !this.isGetting) {
-					this.getArticles();
-				}
-			}).exec();
 		},
 		onLoad() {
 			this.getArticles();
@@ -118,7 +142,7 @@
 								url: `${this.$CONSTURL.GET_ARTICLE_BY_ID}/${id}`
 							});
 				if(res.data.data) {
-					this.article = res.data.data;
+					this.detail = res.data.data;
 					this.listmode = false;
 				} else {
 					uni.showToast({
@@ -133,7 +157,7 @@
 			"artcleList": artcleList,
 			"uni-icons": icons,
 			"searchModal": searchModal,
-			"article": article
+			"articleInfo": articleInfo
 		},
 		methods: {
 			async getArticles (){
@@ -152,16 +176,18 @@
 					const res = await this.$myRequest({
 									url: url
 								});
-					this.articles = res.data.infos.list;
-					this.isLastPage = res.data.infos.isLastPage;
+					let list = res.data.infos.list;
+					if(list) {
+						this.articles = list;
+					}
+					let infos = res.data.infos;
+					if(infos) {
+						this.isLastPage = res.data.infos.isLastPage;
+					}
 					if(!res.data.infos.isLastPage) {
 						this.pn = this.pn + 1;
 					} else {
-						uni.showToast({
-							title: '作者很懒，就写了这些文章',
-							icon: 'none',
-							duration: 2000
-						});
+						this.haveShownToast = false;
 						this.title = '';
 					}
 					this.isGetting = false;
@@ -187,17 +213,24 @@
 				this.wannerSearch = true;
 			},
 			changeToCustomSearch(flag, title) {
-				this.pn = 1;
-				this.articles = [];
-				this.wannerSearch = false;
-				this.isLastPage = false;
-				this.title = title;
-				this.customSearch = flag;
-				if(!flag) {
-					this.choicedTag = {
-						tagName: "All",
-						typeId: 0
+				if(this.listmode) {
+					this.pn = 1;
+					this.articles = [];
+					this.wannerSearch = false;
+					this.isLastPage = false;
+					this.title = title;
+					this.customSearch = flag;
+					if(!flag) {
+						this.choicedTag = {
+							tagName: "All",
+							typeId: 0
+						}
+						this.getArticles();
 					}
+				} else {
+					this.listmode = true;
+					this.pn = 1;
+					this.isLastPage = false;
 					this.getArticles();
 				}
 			}
@@ -213,12 +246,14 @@
 		justify-content: center;
 		background-color: $main-background-color;
 	}
-	.list-mode {
+	.list-mode, .article-mode {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
 		background-color: $main-background-color;
+		position: relative;
+		width: 100%;
 	}
 	.top {
 		position: relative;
@@ -237,6 +272,7 @@
 		line-height: 70rpx;
 		animation: fadeIn ease-out 0.8s;
 		cursor: pointer;
+		z-index: 1000 !important;
 	}
 	.search-icon {
 		top: 10%;
